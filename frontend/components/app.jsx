@@ -1,6 +1,6 @@
 import React from 'react';
 import Todo from './todo';
-import TodoList from 
+// import TodoList from './todo_list/todo_list';
 
 
 const App = () => {
