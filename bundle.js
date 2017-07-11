@@ -28118,7 +28118,7 @@ var TodoListItem = function (_React$Component) {
         this.props.todo.title,
         _react2.default.createElement(
           "button",
-          { type: "button", value: this.props.todo, onClick: this.handleClick },
+          { type: "button", onClick: this.handleClick },
           "Delete"
         )
       );
@@ -28127,9 +28127,7 @@ var TodoListItem = function (_React$Component) {
     key: "handleClick",
     value: function handleClick(event) {
       event.preventDefault();
-      console.log(this.props.todo);
-      console.log(event.target.value);
-      this.props.removeTodo(event.target.value);
+      this.props.removeTodo(this.props.todo);
     }
   }]);
 

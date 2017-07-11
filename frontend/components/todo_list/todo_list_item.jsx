@@ -10,16 +10,14 @@ class TodoListItem extends React.Component {
     return (
       <li>
         {this.props.todo.title}
-        <button type="button" value={this.props.todo} onClick={ this.handleClick } >Delete</button>
+        <button type="button" onClick={ this.handleClick } >Delete</button>
       </li>
     );
   }
 
   handleClick (event) {
     event.preventDefault();
-    console.log(this.props.todo);
-    console.log(event.target.value);
-    this.props.removeTodo(event.target.value);
+    this.props.removeTodo(this.props.todo);
   }
 }
 
