@@ -1,10 +1,11 @@
-class TodosController < ApplicationController
+class Api::TodosController < ApplicationController
   def show
     render json: Todo.find(params[:id])
   end
 
   def index
     @todos = Todo.all
+    render json: @todos
   end
 
   def create
