@@ -12169,9 +12169,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     receiveTodos: function receiveTodos(todos) {
       return dispatch((0, _todo_actions.receiveTodos)(todos));
     },
-    removeTodo: function removeTodo(todo) {
-      return dispatch((0, _todo_actions.removeTodo)(todo));
-    },
     updateTodo: function updateTodo(todo) {
       return dispatch((0, _todo_actions.updateTodo)(todo));
     }
@@ -28109,6 +28106,14 @@ var _react = __webpack_require__(12);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _todo_detail_view = __webpack_require__(334);
+
+var _todo_detail_view2 = _interopRequireDefault(_todo_detail_view);
+
+var _todo_detail_view_container = __webpack_require__(333);
+
+var _todo_detail_view_container2 = _interopRequireDefault(_todo_detail_view_container);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28125,41 +28130,59 @@ var TodoListItem = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (TodoListItem.__proto__ || Object.getPrototypeOf(TodoListItem)).call(this, props));
 
-    _this.handleClick = _this.handleClick.bind(_this);
     _this.updateStatus = _this.updateStatus.bind(_this);
+    _this.handleClick = _this.handleClick.bind(_this);
+    _this.state = {
+      detail: false
+    };
     return _this;
   }
 
   _createClass(TodoListItem, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "li",
+        'li',
         null,
-        this.props.todo.title,
         _react2.default.createElement(
-          "button",
-          { type: "button", onClick: this.handleClick },
-          "Delete"
+          'a',
+          { href: '#', onClick: this.handleClick },
+          this.props.todo.title
         ),
         _react2.default.createElement(
-          "button",
-          { type: "button", onClick: this.updateStatus },
+          'span',
+          null,
+          this.state.detail ? _react2.default.createElement(_todo_detail_view_container2.default, { todo: this.props.todo }) : "",
+          ' '
+        ),
+        _react2.default.createElement(
+          'button',
+          { type: 'button', onClick: this.updateStatus },
           this.props.todo.done ? "Undo" : "Done"
         )
       );
     }
   }, {
-    key: "updateStatus",
+    key: 'handleClick',
+    value: function handleClick(event) {
+      event.preventDefault();
+      // console.log(this.state.detail);
+      if (this.state.detail) {
+        this.setState({
+          detail: false
+        });
+      } else {
+        this.setState({
+          detail: true
+        });
+      }
+      console.log(this.state.detail);
+    }
+  }, {
+    key: 'updateStatus',
     value: function updateStatus(event) {
       event.preventDefault();
       this.props.updateTodo(this.props.todo);
-    }
-  }, {
-    key: "handleClick",
-    value: function handleClick(event) {
-      event.preventDefault();
-      this.props.removeTodo(this.props.todo);
     }
   }]);
 
@@ -28279,6 +28302,107 @@ function uniqueId() {
 }
 
 exports.default = uniqueId;
+
+/***/ }),
+/* 333 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(122);
+
+var _todo_detail_view = __webpack_require__(334);
+
+var _todo_detail_view2 = _interopRequireDefault(_todo_detail_view);
+
+var _todo_actions = __webpack_require__(64);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    removeTodo: function removeTodo(todo) {
+      return dispatch((0, _todo_actions.removeTodo)(todo));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(_todo_detail_view2.default);
+
+/***/ }),
+/* 334 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(12);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TodoDetailView = function (_React$Component) {
+  _inherits(TodoDetailView, _React$Component);
+
+  function TodoDetailView(props) {
+    _classCallCheck(this, TodoDetailView);
+
+    var _this = _possibleConstructorReturn(this, (TodoDetailView.__proto__ || Object.getPrototypeOf(TodoDetailView)).call(this, props));
+
+    console.log(props);
+
+    _this.handleClick = _this.handleClick.bind(_this);
+    return _this;
+  }
+
+  _createClass(TodoDetailView, [{
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        { className: "detail" },
+        _react2.default.createElement(
+          "p",
+          null,
+          this.props.todo.body
+        ),
+        _react2.default.createElement(
+          "button",
+          { type: "button", onClick: this.handleClick },
+          "Delete"
+        )
+      );
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(event) {
+      event.preventDefault();
+      this.props.removeTodo(this.props.todo);
+    }
+  }]);
+
+  return TodoDetailView;
+}(_react2.default.Component);
+
+exports.default = TodoDetailView;
 
 /***/ })
 /******/ ]);
