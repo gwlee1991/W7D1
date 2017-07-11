@@ -7027,6 +7027,7 @@ Object.defineProperty(exports, "__esModule", {
 var RECEIVE_TODOS = exports.RECEIVE_TODOS = "RECEIVE_TODOS";
 var RECEIVE_TODO = exports.RECEIVE_TODO = "RECEIVE_TODO";
 var REMOVE_TODO = exports.REMOVE_TODO = "REMOVE_TODO";
+var UPDATE_TODO = exports.UPDATE_TODO = "UPDATE_TODO";
 
 var receiveTodos = exports.receiveTodos = function receiveTodos(todos) {
   return {
@@ -7045,6 +7046,13 @@ var receiveTodo = exports.receiveTodo = function receiveTodo(todo) {
 var removeTodo = exports.removeTodo = function removeTodo(todo) {
   return {
     type: REMOVE_TODO,
+    todo: todo
+  };
+};
+
+var updateTodo = exports.updateTodo = function updateTodo(todo) {
+  return {
+    type: UPDATE_TODO,
     todo: todo
   };
 };
@@ -12163,6 +12171,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     removeTodo: function removeTodo(todo) {
       return dispatch((0, _todo_actions.removeTodo)(todo));
+    },
+    updateTodo: function updateTodo(todo) {
+      return dispatch((0, _todo_actions.updateTodo)(todo));
     }
   };
 };
@@ -24967,6 +24978,15 @@ var todosReducer = function todosReducer() {
       var dup = (0, _merge3.default)({}, state);
       delete dup[action.todo.id];
       return (0, _merge3.default)({}, dup);
+    case _todo_actions.UPDATE_TODO:
+      var dup2 = (0, _merge3.default)({}, state);
+      var obj = dup2[action.todo.id];
+      if (obj.done) {
+        obj.done = false;
+      } else {
+        obj.done = true;
+      }
+      return (0, _merge3.default)({}, dup2);
     default:
       return state;
   }
@@ -28064,7 +28084,7 @@ var TodoList = function TodoList(props) {
     'ul',
     null,
     props.todos.map(function (todo) {
-      return _react2.default.createElement(_todo_list_item2.default, { key: todo.id, todo: todo, removeTodo: props.removeTodo });
+      return _react2.default.createElement(_todo_list_item2.default, { key: todo.id, todo: todo, updateTodo: props.updateTodo, removeTodo: props.removeTodo });
     }),
     _react2.default.createElement(_todo_form2.default, { receiveTodo: props.receiveTodo })
   );
@@ -28106,6 +28126,7 @@ var TodoListItem = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (TodoListItem.__proto__ || Object.getPrototypeOf(TodoListItem)).call(this, props));
 
     _this.handleClick = _this.handleClick.bind(_this);
+    _this.updateStatus = _this.updateStatus.bind(_this);
     return _this;
   }
 
@@ -28120,8 +28141,19 @@ var TodoListItem = function (_React$Component) {
           "button",
           { type: "button", onClick: this.handleClick },
           "Delete"
+        ),
+        _react2.default.createElement(
+          "button",
+          { type: "button", onClick: this.updateStatus },
+          this.props.todo.done ? "Undo" : "Done"
         )
       );
+    }
+  }, {
+    key: "updateStatus",
+    value: function updateStatus(event) {
+      event.preventDefault();
+      this.props.updateTodo(this.props.todo);
     }
   }, {
     key: "handleClick",
